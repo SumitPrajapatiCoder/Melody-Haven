@@ -7,12 +7,8 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Song
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.views.decorators.cache import never_cache
-from .models import Song
+from django.shortcuts import get_object_or_404
 from .forms import SongEditForm  
 from django.db.models import Q  
 from django.core.paginator import Paginator
@@ -88,7 +84,6 @@ def is_admin(user):
 @user_passes_test(is_admin)
 @never_cache
 def upload_song(request):
-    from .forms import SongUploadForm
     message = None
     if request.method == 'POST':
         form = SongUploadForm(request.POST, request.FILES)
