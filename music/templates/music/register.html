@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #4d62c0, #9558d2);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+            padding: 1rem;
+        }
+
+        .form-box {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2.5rem 2rem;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1.1rem 0.75rem 0.5rem;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #aaa;
+            font-size: 1rem;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #ff4b5c;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 1rem;
+            left: 0.75rem;
+            font-size: 0.95rem;
+            color: #aaa;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus+label,
+        .form-group input:not(:placeholder-shown)+label {
+            top: -0.6rem;
+            left: 0.5rem;
+            font-size: 0.75rem;
+            background: #1d1d1d;
+            padding: 0 0.3rem;
+            color: #ff4b5c;
+        }
+
+        button {
+            padding: 0.9rem;
+            background: #ff4b5c;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #d93040;
+        }
+
+        a {
+            color: #ff4b5c;
+            text-align: center;
+            display: block;
+            margin-top: 1.5rem;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-box {
+                padding: 2rem 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .form-group input {
+                font-size: 0.95rem;
+            }
+
+            button {
+                font-size: 0.95rem;
+                padding: 0.8rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-box">
+        <h2>Register</h2>
+
+        {% if messages %}
+        {% for message in messages %}
+        <p style="color: #ffbcbc; text-align: center;">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="username" id="username" placeholder=" " required>
+                <label for="username">Username</label>
+            </div>
+
+            <div class="form-group">
+                <input type="email" name="email" id="email" placeholder=" " required>
+                <label for="email">Email</label>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password" id="password" placeholder=" " required>
+                <label for="password">Password</label>
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+
+        <a href="{% url 'login' %}">Already have an account? Login</a>
+    </div>
+</body>
+
+</html>

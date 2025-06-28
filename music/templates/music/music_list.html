@@ -1,0 +1,650 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MelodyHaven</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: #fff;
+        }
+
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .navbar {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-info {
+            position: absolute;
+            left: 1.5rem;
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .site-title {
+            text-align: center;
+        }
+
+        .site-title h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: white;
+            word-break: break-word;
+        }
+
+        .dropdown {
+            position: absolute;
+            right: 1.5rem;
+        }
+
+      
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1rem;
+            }
+
+            .user-info,
+            .site-title,
+            .dropdown {
+                position: static;
+                margin-bottom: 0.5rem;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .user-info {
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .dropdown {
+                text-align: center;
+            }
+
+            .site-title h1 {
+                font-size: 1.2rem;
+            }
+        }
+
+        .dropdown {
+            position: absolute;
+            right: 2rem;
+        }
+
+        .navbar-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        i {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        form input[type="text"] {
+            padding: 0.6rem 1rem;
+            width: 300px;
+            max-width: 100%;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        form button.btn {
+            padding: 0.6rem 1rem;
+            background-color: #00c6ff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        form button.btn i {
+            color: #141e30;
+            font-size: 1.1rem;
+        }
+
+        form button.btn:hover {
+            background-color: #0099cc;
+        }
+
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .song-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideUp 0.5s ease;
+        }
+
+        .album-art img {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            object-fit: cover;
+        }
+
+        .song-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0.3rem 0;
+            text-transform: uppercase;
+        }
+
+        .song-artist {
+            color: #ccc;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .custom-player {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #1e2a38;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+        }
+
+        .control-row,
+        .seek-row,
+        .bottom-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .seek-row input[type="range"],
+        .bottom-controls input[type="range"] {
+            width: 150px;
+        }
+
+        .custom-player i,
+        .custom-player select,
+        .custom-player a {
+            color: #ffffff;
+        }
+
+        .custom-player i {
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .custom-player a:hover i {
+            color: #00ffc8;
+        }
+
+        select {
+            background: #2e3b4e;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .dropdown-toggle {
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: white;
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #1f2937;
+            border-radius: 10px;
+            padding: 0.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            min-width: 180px;
+            flex-direction: column;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #2e3a4d;
+            box-shadow: inset 0 0 5px #00c6ff;
+            border-radius: 6px;
+        }
+
+        .dropdown-menu i {
+            font-size: 1.2rem;
+            color: #00c6ff;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .pagination .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.4rem 0.8rem;
+            font-size: 1rem;
+            min-width: 40px;
+            border-radius: 6px;
+            background-color: #00c6ff;
+            color: white;
+            border: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .pagination .btn:hover {
+            background-color: #0099cc;
+            transform: scale(1.05);
+        }
+
+        .pagination span {
+            font-size: 1rem;
+            padding: 0 0.5rem;
+            color: #eee;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .song-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .song-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 639px) {
+            .song-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .navbar .site-title h1 {
+                font-size: 1.2rem;
+            }
+
+            .navbar .user-info,
+            .navbar .dropdown {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if user.is_authenticated %}
+    <div class="navbar">
+        <div class="user-info">
+            <i class="fa-solid fa-user"></i>
+            <strong>{{ user.username|upper }}</strong>
+        </div>
+
+        <div class="site-title">
+            <h1><i class="fa-solid fa-music"></i> MelodyHaven <i class="fa-solid fa-music"></i></h1>
+        </div>
+
+        <div class="dropdown">
+            <i class="fa-solid fa-bars dropdown-toggle" onclick="toggleDropdown()"></i>
+            <div class="dropdown-menu" id="dropdownMenu">
+                {% if user.is_superuser %}
+                <a href="{% url 'upload_song' %}"><i class="fa-solid fa-cloud-arrow-up"></i> Upload</a>
+                <a href="{% url 'delete_song' %}"><i class="fa-solid fa-trash"></i>Delete / <i
+                        class="fa-solid fa-pen-to-square"></i> Edit</a>
+                <a href="{% url 'user_list' %}"><i class="fa-solid fa-users"></i> Users</a>
+                {% endif %}
+                <a href="{% url 'logout_home' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <form method="GET" action="">
+        <input type="text" name="q" id="searchInput" placeholder="Search by title or artist..."
+            value="{{ request.GET.q }}">
+        <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+
+    {% if songs %}
+    <div class="song-grid">
+
+        {% for song in songs %}
+        <div class="song-card">
+            <div class="album-art">
+                <img src="{% static 'music/musicIcon.jpeg' %}" alt="Album Art">
+            </div>
+
+
+            <div class="song-details">
+                <h3 class="song-title">{{ song.title }}</h3>
+                <p class="song-artist">{{ song.artist }}</p>
+
+                <div class="custom-player">
+                    <div class="seek-row">
+                        <input type="range" id="seekBar_{{ forloop.counter }}" value="0">
+                        <span id="currentTime_{{ forloop.counter }}">0:00</span> /
+                        <span id="duration_{{ forloop.counter }}">0:00</span>
+                    </div>
+
+                    <div class="control-row">
+                        <div class="seek-row">
+                            <a id="rewindBtn_{{ forloop.counter }}" title="Back 10s">
+                                <i class="fa-solid fa-backward"></i>
+                            </a>
+                            <a id="playPauseBtn_{{ forloop.counter }}">
+                                <i class="fa-solid fa-play" id="playIcon_{{ forloop.counter }}"></i>
+                            </a>
+                            <a id="forwardBtn_{{ forloop.counter }}" title="Forward 10s">
+                                <i class="fa-solid fa-forward"></i>
+                            </a>
+                        </div>
+
+                        <div class="bottom-controls">
+                            <a><i class="fa-solid fa-volume-high" id="volumeIcon_{{ forloop.counter }}"></i></a>
+                            <input type="range" id="volumeSlider_{{ forloop.counter }}" min="0" max="1" step="0.01"
+                                value="1">
+
+                            <select id="speedSelect_{{ forloop.counter }}">
+                                <option value="0.5">0.5x</option>
+                                <option value="1" selected>1x</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x</option>
+                            </select>
+
+                            <a href="{{ song.audio_file.url }}" download title="Download">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <audio id="audioPlayer_{{ forloop.counter }}">
+                        <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                    </audio>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="page-wrapper">
+            {% if page_obj.has_other_pages %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                <a class="btn" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page=1">
+                    <i class="fa fa-angle-double-left"></i>
+                </a>
+                <a class="btn"
+                    href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.previous_page_number }}">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                {% endif %}
+
+                <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+                {% if page_obj.has_next %}
+                <a class="btn"
+                    href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.next_page_number }}">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                <a class="btn"
+                    href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.paginator.num_pages }}">
+                    <i class="fa fa-angle-double-right"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+
+
+    </div>
+    {% else %}
+    <p style="text-align:center;">No songs uploaded yet.</p>
+    {% endif %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const audioElements = document.querySelectorAll("audio");
+
+            audioElements.forEach((audio, index) => {
+                const i = index + 1;
+
+                const playPauseBtn = document.getElementById(`playPauseBtn_${i}`);
+                const playIcon = document.getElementById(`playIcon_${i}`);
+                const seekBar = document.getElementById(`seekBar_${i}`);
+                const currentTime = document.getElementById(`currentTime_${i}`);
+                const duration = document.getElementById(`duration_${i}`);
+                const volumeSlider = document.getElementById(`volumeSlider_${i}`);
+                const volumeIcon = document.getElementById(`volumeIcon_${i}`);
+                const speedSelect = document.getElementById(`speedSelect_${i}`);
+                const rewindBtn = document.getElementById(`rewindBtn_${i}`);
+                const forwardBtn = document.getElementById(`forwardBtn_${i}`);
+
+
+                rewindBtn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    if (!isNaN(audio.duration)) {
+                        audio.currentTime = Math.max(audio.currentTime - 10, 0);
+                    }
+                });
+
+
+                forwardBtn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    if (!isNaN(audio.duration)) {
+                        audio.currentTime = Math.min(audio.currentTime + 10, audio.duration);
+                    }
+                });
+
+
+                playPauseBtn.addEventListener("click", () => {
+                    audioElements.forEach((a, j) => {
+                        if (j !== index) {
+                            a.pause();
+                            const otherIcon = document.getElementById(`playIcon_${j + 1}`);
+                            if (otherIcon) otherIcon.className = "fa-solid fa-play";
+                        }
+                    });
+
+                    if (audio.paused) {
+                        audio.play();
+                        playIcon.className = "fa-solid fa-pause";
+                    } else {
+                        audio.pause();
+                        playIcon.className = "fa-solid fa-play";
+                    }
+                });
+
+
+                audio.addEventListener("loadedmetadata", () => {
+                    seekBar.max = audio.duration;
+                    duration.textContent = formatTime(audio.duration);
+                });
+
+
+                audio.addEventListener("timeupdate", () => {
+                    seekBar.value = audio.currentTime;
+                    currentTime.textContent = formatTime(audio.currentTime);
+                });
+
+
+                seekBar.addEventListener("input", () => {
+                    if (!isNaN(audio.duration)) {
+                        audio.currentTime = seekBar.value;
+                        if (!audio.paused && audio.readyState >= 2) {
+                            audio.play();
+                        }
+                    }
+                });
+
+
+                volumeSlider.addEventListener("input", () => {
+                    const newVolume = parseFloat(volumeSlider.value);
+                    audio.volume = newVolume;
+                    audio.muted = newVolume === 0;
+
+                    updateVolumeIcon(volumeIcon, newVolume);
+                });
+
+
+                volumeIcon.addEventListener("click", () => {
+                    if (audio.muted || audio.volume === 0) {
+                        audio.muted = false;
+                        audio.volume = 1;
+                        volumeSlider.value = 1;
+                        updateVolumeIcon(volumeIcon, 1);
+                    } else {
+                        audio.muted = true;
+                        audio.volume = 0;
+                        volumeSlider.value = 0;
+                        updateVolumeIcon(volumeIcon, 0);
+                    }
+                });
+
+
+                speedSelect.addEventListener("change", () => {
+                    audio.playbackRate = speedSelect.value;
+                });
+
+                function updateVolumeIcon(icon, volume) {
+                    icon.classList.remove("fa-volume-high", "fa-volume-xmark");
+                    icon.classList.add(volume === 0 ? "fa-volume-xmark" : "fa-volume-high");
+                }
+
+                function formatTime(sec) {
+                    const m = Math.floor(sec / 60);
+                    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+                    return `${m}:${s}`;
+                }
+            });
+        });
+
+        window.addEventListener("load", function () {
+            const url = new URL(window.location);
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) searchInput.value = '';
+            if (url.searchParams.has("q")) {
+                url.searchParams.delete("q");
+                window.history.replaceState({}, document.title, url.pathname);
+            }
+        });
+
+
+        function toggleDropdown() {
+            const menu = document.getElementById("dropdownMenu");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+
+        window.addEventListener("click", function (e) {
+            const toggle = document.querySelector(".dropdown-toggle");
+            const menu = document.getElementById("dropdownMenu");
+            if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+                menu.style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

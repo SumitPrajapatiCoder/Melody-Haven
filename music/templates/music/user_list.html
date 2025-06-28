@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>User List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1d4350, #a43931);
+            color: #fff;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        i {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.2rem;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+            min-width: 600px;
+        }
+
+        thead th {
+            background-color: #111827;
+            color: #fff;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .home-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .home-btn {
+            background-color: #00c6ff;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .home-btn:hover {
+            background-color: #0072ff;
+        }
+        .user-count {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            th,
+            td {
+                padding: 0.6rem;
+                font-size: 0.95rem;
+            }
+
+            .home-btn {
+                width: 90%;
+                display: inline-block;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Registered Users</h2>
+    <div class="user-count" >
+        <i class="fa-solid fa-users"></i> <strong>{{ user_count }}</strong> User{% if user_count != 1 %}s{% endif %}
+    </div>
+    
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Date Joined</th>
+                    <th>Is Staff</th>
+                    <th>Is Superuser</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email|default:'-' }}</td>
+                    <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
+                    <td>{{ user.is_staff }}</td>
+                    <td>{{ user.is_superuser }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center;">No users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="home-link">
+        <a href="{% url 'music_list' %}" class="home-btn"><i class="fa-solid fa-house"></i> Home Page</a>
+    </div>
+</body>
+
+</html>
