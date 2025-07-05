@@ -15,8 +15,11 @@ from django.core.paginator import Paginator
 
 
 
-@never_cache
+
 def user_register(request):
+    if request.user.is_authenticated:
+        return redirect('music_list')
+    
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -34,8 +37,11 @@ def user_register(request):
     return render(request, 'music/register.html')
 
 
-@never_cache
+
 def user_login(request):
+    if request.user.is_authenticated:
+        return redirect('music_list')
+    
     if request.method == 'POST':
         login_input = request.POST.get('username') 
         password = request.POST.get('password')
@@ -58,7 +64,7 @@ def user_login(request):
     return render(request, 'music/login.html')
 
 
-
+@never_cache
 @login_required
 def music_list(request):
     query = request.GET.get('q', '')
