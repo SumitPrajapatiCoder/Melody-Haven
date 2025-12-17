@@ -133,11 +133,3 @@ MelodyHaven/
 
 <img width="1357" height="566" alt="image" src="https://github.com/user-attachments/assets/cf2f3875-2590-451b-9c65-b261b95dc4f5" />
 
-
-
-
-
-
-
-
-This is written by [readme.ai](https://readme-generator-phi.vercel.app/).
